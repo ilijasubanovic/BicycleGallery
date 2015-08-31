@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:id="@+id/LayGallery"
+
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textViewGallery1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="top|center_horizontal"
+        android:text="G A L L E R Y" android:gravity="center_horizontal" android:textColor="#000000"/>
+
+    <Spinner
+        android:id="@+id/spinnerManufacturers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textViewGallery1" />
+    <Spinner
+        android:id="@+id/spinnerBikeTypes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/spinnerManufacturers" />
+    <Spinner
+        android:id="@+id/spinnerBikeModelNames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/spinnerBikeTypes" />
+    <ImageView
+        android:id="@+id/ImageViewGallery"
+        android:layout_width="900dp"
+        android:layout_height="250dp"
+        android:layout_below="@+id/spinnerBikeModelNames"/>
+
+    <Button
+        android:id="@+id/backGallery"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="@string/buttonPrevious" />
+
+    <Button
+        android:id="@+id/nextGallery"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/buttonNext" />
+
+    <ProgressBar
+        android:id="@+id/progressBarGallery"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:layout_above="@+id/backGallery"
+        android:layout_alignParentLeft="true" />
+
+
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/backGallery"
+        android:layout_alignTop="@+id/nextGallery"
+        android:layout_toLeftOf="@+id/nextGallery"
+        android:layout_toRightOf="@+id/backGallery"
+        android:text="" android:gravity="center_horizontal" android:textColor="#000000"/>
+
+
+
+</RelativeLayout>

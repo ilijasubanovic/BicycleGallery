@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">BicycleGallery</string>
+    <string name="buttonPrevious">BACK</string>
+    <string name="buttonNext">NEXT</string>
+
+</resources>
