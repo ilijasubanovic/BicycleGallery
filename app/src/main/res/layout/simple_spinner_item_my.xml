@@ -4,8 +4,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content"
-    android:textSize="15dip"
+    android:textSize="25dip"
     android:gravity="left"  
-    android:textColor="#000000"         
+    android:textColor="#000000"
+    android:shadowColor="#fae806"
+    android:shadowRadius="10"
+    android:background="#402c2c2c"
     android:padding="5dip"
     />

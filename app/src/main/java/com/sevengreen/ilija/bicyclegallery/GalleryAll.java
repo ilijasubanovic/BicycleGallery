@@ -4,13 +4,18 @@ package com.sevengreen.ilija.bicyclegallery;
 //http://7green.vacau.com/bikes/
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -26,14 +31,15 @@ public class GalleryAll extends Activity  {
     DataBaseHelper myDbHelper;
     String selectedItemManufacturer="All", selectedItemType ="All", selectedItemModel, bicycleMapKey;
     ArrayAdapter<String> spinnerArrayAdapterBikeTypes;
-   ArrayAdapter<String> spinnerArrayAdapterManufacturers;
+    ArrayAdapter<String> spinnerArrayAdapterManufacturers;
     ArrayAdapter<String> spinnerArrayAdapterBikeModelNames;
     Spinner spinnerManufacturers;
     Spinner spinnerBikeTypes;
+    Spinner spinnerBikeModelNames;
+    TextView textboxBikeManufacturer, textboxBikeType, textboxBikeName;
     ImageView display;
-    String[] modelsArray;
-    Collection<String> vals;
-    Collection<Bicycle> valsB;
+    BicycleLists myBicycleLists = new BicycleLists();
+    int currentImagePosition=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +64,10 @@ public class GalleryAll extends Activity  {
         super.onStart();
 
         setContentView(R.layout.gallery_all);
-        display	= (ImageView) findViewById(R.id.ImageViewGallery);
-        final BicycleLists myBicycleLists = new BicycleLists();
+        display = (ImageView) findViewById(R.id.ImageViewGallery);
+        textboxBikeManufacturer = (TextView) findViewById(R.id.textBikeManufacturer);
+        textboxBikeType = (TextView) findViewById(R.id.textBikeType);
+        textboxBikeName = (TextView) findViewById(R.id.textBikeName);
         //get list of All bikes...
         myDbHelper.getInitialBicycleList(myBicycleLists);
 
@@ -76,140 +84,114 @@ public class GalleryAll extends Activity  {
         spinnerBikeTypes.setAdapter(spinnerArrayAdapterBikeTypes);
         spinnerBikeTypes.setSelection(0, false);
 
-        Spinner spinnerBikeModelNames = new Spinner(this);
+        spinnerBikeModelNames = new Spinner(this);
         spinnerBikeModelNames = (Spinner) findViewById(R.id.spinnerBikeModelNames);
         spinnerArrayAdapterBikeModelNames = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_my, myBicycleLists.getBikeModels());
         spinnerBikeModelNames.setAdapter(spinnerArrayAdapterBikeModelNames);
         spinnerBikeModelNames.setSelection(0, false);
 
-
-/*        Spinner spinnerBikeModelNames = new Spinner(this);
-        spinnerBikeModelNames = (Spinner) findViewById(R.id.spinnerBikeModelNames);
-        spinnerArrayAdapterBikeModelNames = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_my, myBicycleLists.getBikeModels().values().toArray(new String [0]));
-        spinnerBikeModelNames.setAdapter(spinnerArrayAdapterBikeModelNames);
-        spinnerBikeModelNames.setSelection(0, false);
-
-       Spinner spinnerBikeModelNames = new Spinner(this);
-        spinnerBikeModelNames = (Spinner) findViewById(R.id.spinnerBikeModelNames);
-        vals = myBicycleLists.getBikeModels().values();
-        modelsArray = vals.toArray(new String[vals.size()]);
-        ArrayList<String> modelsList = new ArrayList<String>(Arrays.asList(modelsArray));
-        spinnerArrayAdapterBikeModelNames = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_my, modelsList);
-        spinnerBikeModelNames.setAdapter(spinnerArrayAdapterBikeModelNames);
-        spinnerBikeModelNames.setSelection(0, false);
-        */
-/*getAllBikeModels
-        //myBicycleLists
-        Spinner spinnerBikeModelNames = new Spinner(this);
-        spinnerBikeModelNames = (Spinner) findViewById(R.id.spinnerBikeModelNames);
-        valsB = myBicycleLists.getListOfChosenBicycles().values();
-
-        //modelsArray = valsB.toArray(new String[valsB.size()]);
-        //ArrayList<String> modelsList = new ArrayList<String>(Arrays.asList(modelsArray));
-        List<String> modelsList = valsB.strea;
-
-        spinnerArrayAdapterBikeModelNames = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_my, modelsList);
-        spinnerBikeModelNames.setAdapter(spinnerArrayAdapterBikeModelNames);
-        spinnerBikeModelNames.setSelection(0, false);
-*/
+        //initial bike
+        updateBikeImage(currentImagePosition);
 
         spinnerManufacturers.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                //update spinner lists according to manufacturer selection
-                selectedItemManufacturer = adapterView.getItemAtPosition(position).toString();
-                myDbHelper.updateOnManufacturerClick(myBicycleLists, selectedItemManufacturer, selectedItemType);
-                spinnerArrayAdapterBikeTypes.clear();
-                spinnerArrayAdapterBikeTypes.addAll(myBicycleLists.getBikeTypes());
-                spinnerArrayAdapterBikeTypes.notifyDataSetChanged();
-                int spinnerPosition = spinnerArrayAdapterBikeTypes.getPosition(selectedItemType);
-                spinnerBikeTypes.setSelection(spinnerPosition);
-                spinnerArrayAdapterBikeModelNames.clear();
-/*
-                vals = myBicycleLists.getBikeModels().values();
-                Collection<String> names = CollectionUtils.collect(personList, TransformerUtils.invokerTransformer("getName"));
+                                                           @Override
+                                                           public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                                                               //update spinner lists according to manufacturer selection
+                                                               selectedItemManufacturer = adapterView.getItemAtPosition(position).toString();
+                                                               myDbHelper.updateOnManufacturerClick(myBicycleLists, selectedItemManufacturer, selectedItemType);
+                                                               spinnerArrayAdapterBikeTypes.clear();
+                                                               spinnerArrayAdapterBikeTypes.addAll(myBicycleLists.getBikeTypes());
+                                                               spinnerArrayAdapterBikeTypes.notifyDataSetChanged();
+                                                               int spinnerPosition = spinnerArrayAdapterBikeTypes.getPosition(selectedItemType);
+                                                               spinnerBikeTypes.setSelection(spinnerPosition);
+                                                               spinnerArrayAdapterBikeModelNames.clear();
 
-                modelsArray = vals.toArray(new String[vals.size()]);
-                ArrayList<String> modelsList = new ArrayList<String>(Arrays.asList(modelsArray));
-*/
-                spinnerArrayAdapterBikeModelNames.addAll(myBicycleLists.getBikeModels());
-                spinnerArrayAdapterBikeModelNames.notifyDataSetChanged();
-                if(selectedItemManufacturer.equalsIgnoreCase("All"))
-                {
-                    spinnerArrayAdapterManufacturers.clear();
-                    spinnerArrayAdapterManufacturers.addAll(myBicycleLists.getManufacturers());
-                    spinnerArrayAdapterManufacturers.notifyDataSetChanged();
-                }
-            }
+                                                               spinnerArrayAdapterBikeModelNames.addAll(myBicycleLists.getBikeModels());
+                                                               spinnerArrayAdapterBikeModelNames.notifyDataSetChanged();
+                                                               if (selectedItemManufacturer.equalsIgnoreCase("All")) {
+                                                                   spinnerArrayAdapterManufacturers.clear();
+                                                                   spinnerArrayAdapterManufacturers.addAll(myBicycleLists.getManufacturers());
+                                                                   spinnerArrayAdapterManufacturers.notifyDataSetChanged();
+                                                               }
+                                                               updateBikeImage(0);
+                                                           }
 
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        }
+                                                           public void onNothingSelected(AdapterView<?> adapterView) {
+                                                           }
+                                                       }
         );
 
         spinnerBikeTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                selectedItemType = adapterView.getItemAtPosition(position).toString();
-                myDbHelper.updateOnTypeClick(myBicycleLists, selectedItemManufacturer, selectedItemType);
-                spinnerArrayAdapterManufacturers.clear();
-                spinnerArrayAdapterManufacturers.addAll(myBicycleLists.getManufacturers());
-                spinnerArrayAdapterManufacturers.notifyDataSetChanged();
-                int spinnerPosition = spinnerArrayAdapterManufacturers.getPosition(selectedItemManufacturer);
-                spinnerManufacturers.setSelection(spinnerPosition);
-                spinnerArrayAdapterBikeModelNames.clear();
-                spinnerArrayAdapterBikeModelNames.addAll(myBicycleLists.getBikeModels());
-                spinnerArrayAdapterBikeModelNames.notifyDataSetChanged();
-                if(selectedItemType.equalsIgnoreCase("All"))
-                {
-                    spinnerArrayAdapterBikeTypes.clear();
-                    spinnerArrayAdapterBikeTypes.addAll(myBicycleLists.getBikeTypes());
-                    spinnerArrayAdapterBikeTypes.notifyDataSetChanged();
-                }
-            }
+                                                       @Override
+                                                       public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                                                           selectedItemType = adapterView.getItemAtPosition(position).toString();
+                                                           myDbHelper.updateOnTypeClick(myBicycleLists, selectedItemManufacturer, selectedItemType);
+                                                           spinnerArrayAdapterManufacturers.clear();
+                                                           spinnerArrayAdapterManufacturers.addAll(myBicycleLists.getManufacturers());
+                                                           spinnerArrayAdapterManufacturers.notifyDataSetChanged();
+                                                           int spinnerPosition = spinnerArrayAdapterManufacturers.getPosition(selectedItemManufacturer);
+                                                           spinnerManufacturers.setSelection(spinnerPosition);
+                                                           spinnerArrayAdapterBikeModelNames.clear();
+                                                           spinnerArrayAdapterBikeModelNames.addAll(myBicycleLists.getBikeModels());
+                                                           spinnerArrayAdapterBikeModelNames.notifyDataSetChanged();
+                                                           if (selectedItemType.equalsIgnoreCase("All")) {
+                                                               spinnerArrayAdapterBikeTypes.clear();
+                                                               spinnerArrayAdapterBikeTypes.addAll(myBicycleLists.getBikeTypes());
+                                                               spinnerArrayAdapterBikeTypes.notifyDataSetChanged();
+                                                           }
+                                                           updateBikeImage(0);
+                                                       }
 
 
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        }
+                                                       public void onNothingSelected(AdapterView<?> adapterView) {
+                                                       }
+                                                   }
         );
 
 
         spinnerBikeModelNames.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                //selectedItemModel = adapterView.getItemAtPosition(position).toString();
-                //bicycleMapKey=selectedItemManufacturer+selectedItemType+selectedItemModel;
-                //Log.v("bicycleMapKey", bicycleMapKey);
-                String tmps= "author_mtb_trophy.jpg";
-                if(myBicycleLists.getListOfChosenBicycles().containsKey(position)) {
-                    Bicycle tmpBike = myBicycleLists.getListOfChosenBicycles().get(position);
-                    Log.v("Fund", "asdasd");
-                    Log.v("tmpBike", tmpBike.toString());
-                    Log.v("1", tmpBike.getBikeModelName().toString());
-                    Log.v("2", tmpBike.getBikeType().toString());
-                    Log.v("3", tmpBike.getBrandName().toString());
-                    Log.v("4", tmpBike.getLinkToLocalImage().toString());
-                    tmps = tmpBike.getLinkToLocalImage().split("\\.")[0];
-                    Log.v("TMP1", tmps);
-                   // tmps = tmpBike.getBrandName()+"_"+tmpBike.getBikeType()+"_"+tmpBike.getBikeModelName();
-                    //Log.v("TMP2", tmps);
-                }
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                                                                updateBikeImage(position);
+                                                            }
 
-
-
-                //display.setImageResource(R.drawable.author_cross_codex);
-                display.setImageResource(getBaseContext().getResources().getIdentifier(tmps,"drawable","com.sevengreen.ilija.bicyclegallery"));
-                //display.setImageResource(getBaseContext().getResources().getIdentifier(tmps, "drawable", "com.sevengreen.ilija.bicyclegallery"));
-
-            }
-            public void onNothingSelected(AdapterView<?> adapterView) {  }
-            }
+                                                            public void onNothingSelected(AdapterView<?> adapterView) {
+                                                            }
+                                                        }
         );
 
-
-
-
+        Button buttonNext = (Button) findViewById(R.id.nextGallery);
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentImagePosition<myBicycleLists.getListOfChosenBicycles().size()-1)
+                    updateBikeImage(currentImagePosition + 1);
+            }
+        });
+        Button buttonPrevious = (Button) findViewById(R.id.backGallery);
+        buttonPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentImagePosition>0)
+                    updateBikeImage(currentImagePosition - 1);
+            }
+        });
 
     }
+    void updateBikeImage (int position)
+    {
+        Bicycle tmpBike=null;
+        currentImagePosition=position;
+        String tmps="null";
+        if(myBicycleLists.getListOfChosenBicycles().containsKey(position)) {
+            tmpBike = myBicycleLists.getListOfChosenBicycles().get(position);
+            tmps = tmpBike.getLinkToLocalImage().split("\\.")[0];
+        }
+        display.setImageResource(getBaseContext().getResources().getIdentifier(tmps, "drawable", "com.sevengreen.ilija.bicyclegallery"));
+        spinnerBikeModelNames.setSelection(position);
+        textboxBikeManufacturer.setText(tmpBike.getBrandName());
+        textboxBikeType.setText(tmpBike.getBikeType());
+        textboxBikeName.setText(tmpBike.getBikeModelName());
+    }
+
 }
