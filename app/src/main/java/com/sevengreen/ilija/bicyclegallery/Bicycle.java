@@ -12,10 +12,6 @@ public class Bicycle {
     String linkToLocalImage;
     String linkToRemoteImage;
 
-    public Bicycle(String brandName) {
-        this.brandName = brandName;
-    }
-
     public Bicycle() {
     }
 

@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">BicycleGallery</string>
-    <string name="buttonPrevious">BACK</string>
+    <string name="buttonPrevious">PREVIOUS</string>
     <string name="buttonNext">NEXT</string>
+    <string name="titleManufacturer">Manufacturer</string>
+    <string name="titleType">Bike Type</string>
+    <string name="titleModelName">Model Name</string>
+    <string name="defaultManufacturerValue">_</string>
+    <string name="defaultTypeValue">_</string>
+    <string name="defaultModelValue">_</string>
+    <string name="emptyString"></string>
+
 
 </resources>

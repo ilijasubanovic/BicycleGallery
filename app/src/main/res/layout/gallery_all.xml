@@ -1,137 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LayGallery"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/backg"
-    android:id="@+id/LayGallery"
-
+    android:background="#ffffff"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textViewGallery1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="top|center_horizontal"
-        android:text="G A L L E R Y" android:gravity="center_horizontal" android:textColor="#000000"/>
 
-    <Spinner
-        android:id="@+id/spinnerManufacturers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:popupBackground="#85151545"
-        android:layout_below="@+id/textViewGallery1" />
-    <Spinner
-        android:id="@+id/spinnerBikeTypes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:popupBackground="#85151545"
-        android:layout_below="@+id/spinnerManufacturers" />
-    <Spinner
-        android:id="@+id/spinnerBikeModelNames"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:popupBackground="#85151545"
-        android:layout_below="@+id/spinnerBikeTypes" />
-    <ImageView
-        android:id="@+id/ImageViewGallery"
+    <LinearLayout
+        android:id="@+id/spinnerContainerLayout"
         android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/spinnerBikeModelNames"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/spinner_bkg"
 
-    <TextView
-        android:id="@+id/textTitleManufacturer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Manufacturer"
-        android:layout_above="@+id/textTitleType"
-        android:layout_alignLeft="@+id/textTitleType"
-        android:layout_alignStart="@+id/textTitleType" />
-    <TextView
-        android:id="@+id/textTitleType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Type"
-        android:layout_above="@+id/textTitleName"
-        android:layout_alignLeft="@+id/textTitleName"
-        android:layout_alignStart="@+id/textTitleName" />
-    <TextView
-        android:id="@+id/textTitleName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bike model"
-        android:layout_above="@+id/progressBarGallery"
-        android:layout_alignRight="@+id/backGallery"  />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textBikeManufacturer"
-        android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/spinnerManufacturers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/spinnerBikeTypes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/spinnerBikeModelNames"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <ImageSwitcher
+        android:id="@+id/imageSwitcher"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tableLayout"
+        android:layout_below="@+id/spinnerContainerLayout"/>
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:layout_above="@+id/textBikeType"
-        android:layout_alignLeft="@+id/textBikeType"
-        android:layout_alignStart="@+id/textBikeType" />
-    <TextView
-        android:id="@+id/textBikeType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:layout_above="@+id/textBikeName"
-        android:layout_alignLeft="@+id/textBikeName"
-        android:layout_alignStart="@+id/textBikeName" />
-    <TextView
-        android:id="@+id/textBikeName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
+        android:layout_centerHorizontal="true"
         android:layout_above="@+id/progressBarGallery"
-        android:layout_centerHorizontal="true" />
+        android:background="@drawable/info_bkg">
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:text="@string/emptyString"
+                android:textColor="@color/infoTextColor"
+                android:textColorHighlight="@color/infoTextColorBackground"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_weight="1"
+                android:text="@string/emptyString"
+                android:textColor="@color/infoTextColor"
+                android:textColorHighlight="@color/infoTextColorBackground"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textTitleManufacturer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:text="@string/titleManufacturer"
+                android:textColor="@color/infoTextColor"
+                android:textColorHighlight="@color/infoTextColorBackground"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/textBikeManufacturer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_weight="1"
+                android:text="@string/defaultManufacturerValue"
+                android:textColor="@color/infoTextColor"
+                android:textColorHighlight="@color/infoTextColorBackground"
+                android:capitalize="words" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textTitleType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:text="@string/titleType"
+                android:textColor="@color/infoTextColor"
+                android:textColorHighlight="@color/infoTextColorBackground"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/textBikeType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_weight="1"
+                android:text="@string/defaultTypeValue"
+                android:textColor="@color/infoTextColor"
+                android:textColorHighlight="@color/infoTextColorBackground"
+                android:capitalize="words" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textTitleName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:text="@string/titleModelName"
+                android:textColor="@color/infoTextColor"
+                android:textColorHighlight="@color/infoTextColorBackground"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/textBikeName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_weight="1"
+                android:text="@string/defaultModelValue"
+                android:textColor="@color/infoTextColor"
+                android:textColorHighlight="@color/infoTextColorBackground"
+                android:capitalize="words" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:text="@string/emptyString"
+                android:textColor="@color/infoTextColor" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_weight="1"
+                android:text="@string/emptyString"
+                android:textColor="@color/infoTextColor" />
+        </TableRow>
+    </TableLayout>
+    <ProgressBar
+        android:id="@+id/progressBarGallery"
+        android:layout_above="@+id/buttonsLayout"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentLeft="true" />
+
+    <RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+        android:background="@color/spinnerColorBackground"
+        android:id="@+id/buttonsLayout">
 
     <Button
         android:id="@+id/backGallery"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:text="@string/buttonPrevious" />
 
     <Button
         android:id="@+id/nextGallery"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:text="@string/buttonNext"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:text="@string/buttonNext" />
+        android:layout_alignParentEnd="true" />
 
-    <ProgressBar
-        android:id="@+id/progressBarGallery"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="10dp"
-        android:layout_above="@+id/backGallery"
-        android:layout_alignParentLeft="true" />
-
-
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/backGallery"
-        android:layout_alignTop="@+id/nextGallery"
-        android:layout_toLeftOf="@+id/nextGallery"
-        android:layout_toRightOf="@+id/backGallery"
-        android:text="" android:gravity="center_horizontal" android:textColor="#000000"/>
-
-
+</RelativeLayout>
 
 
 </RelativeLayout>

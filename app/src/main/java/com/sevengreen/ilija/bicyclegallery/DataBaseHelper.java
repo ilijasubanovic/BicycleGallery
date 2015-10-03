@@ -5,20 +5,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.NonNull;
-import android.util.Log;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -52,6 +46,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         if(dbExist){
             //do nothing - database already exist
+            //check and update table !!!!!!!!!!!!
         }else{
 
             //By calling this method and empty database will be created into the default system path
@@ -95,7 +90,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         }
 
-        return checkDB != null ? true : false;
+        return checkDB != null;// ? true : false;
     }
 
     /**
@@ -161,15 +156,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     // to you to create adapters for your views.
 
     //get list of all manufacturers
-   /* public void getInitialList(List<Bicycle> BicycleList, List<String> Manufacturers, List<String> BikeTypes, List<String> BikeModels)
-    {
-        String whereClause = createWhereClause("All","All");
-        BicycleList=getBikeObjects(whereClause);
-        Manufacturers=getAllManufacturers(whereClause);
-        BikeTypes=getAllBikeTypes("All");
-        BikeModels=getAllBikeModels(whereClause);
-    }*/
-    //get list of all manufacturers
     public void getInitialBicycleList(BicycleLists dbBicycleList)
     {
         String whereClause = createWhereClause("All","All");
@@ -183,24 +169,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void updateOnManufacturerClick(BicycleLists dbBicycleList, String selectedItemManufacturer, String selectedItemType)
     {
         String whereClause = createWhereClause(selectedItemManufacturer,selectedItemType);
-        //Update manufacturers list only if Manufacturer was not chosen (equals "All)
-        //Log.v("K L I K - MANUFAC", selectedItemManufacturer+"-"+selectedItemType );
-        //if(selectedItemManufacturer.equalsIgnoreCase("All"))
-        //    dbBicycleList.setManufacturers(getAllManufacturers(selectedItemType));
-        //else do nothing. Manufacturer was already chosen and only bike models should be updated
         dbBicycleList.setListOfChosenBicycles(getBikeObjects(whereClause));
         dbBicycleList.setBikeTypes(getAllBikeTypes(selectedItemManufacturer));
         dbBicycleList.setBikeModels(getAllBikeModels(whereClause));
     }
 
-    //updateOnManufacturerClick
+    //updateOnTypeClick
     public void updateOnTypeClick(BicycleLists dbBicycleList, String selectedItemManufacturer, String selectedItemType)
     {
         String whereClause = createWhereClause(selectedItemManufacturer,selectedItemType);
-        //Log.v("K L I K - Type", selectedItemManufacturer+"-"+selectedItemType );
-        //if (selectedItemType.equalsIgnoreCase("All"))
-        //    dbBicycleList.setBikeTypes(getAllBikeTypes(selectedItemManufacturer));
-        //else do nothing. type was already chosen and only bike models should be updated
         dbBicycleList.setListOfChosenBicycles(getBikeObjects(whereClause));
         dbBicycleList.setManufacturers(getAllManufacturers(selectedItemType));
         dbBicycleList.setBikeModels(getAllBikeModels(whereClause));
@@ -209,12 +186,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
        //get list of all manufacturers
     public List<String> getAllManufacturers(String selectedItemType)
     {
-        ArrayList localArrayList = new ArrayList();
+        ArrayList<String> localArrayList = new ArrayList<>();
         String whereClause = " bike_type ";
         if (selectedItemType.equalsIgnoreCase("All"))
             whereClause += " NOTNULL";
         else
-            whereClause += "= '" + selectedItemType + "'";
+            whereClause += "= '" + selectedItemType.toLowerCase() + "'";
         Object localObject = "SELECT DISTINCT brand_name FROM " + DB_TABLE + " WHERE " + whereClause;
         localObject = getWritableDatabase().rawQuery((String)localObject, null);
         //Add First value "All"
@@ -223,11 +200,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             do
             {
                 String manufacturerName = ((Cursor)localObject).getString(0);
-                //Log.v("MAnufacturer from db",manufacturerName);
-               // Bicycle bicycleManufacturer = new Bicycle(manufacturerName);
-                localArrayList.add(manufacturerName);
+                localArrayList.add(capitalize(manufacturerName));
             } while (((Cursor)localObject).moveToNext());
         }
+        ((Cursor) localObject).close();
         return localArrayList;
     }
 
@@ -236,12 +212,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //get list of all Bike Types
     public List<String> getAllBikeTypes(String selectedItemManufacturer)
     {
-        ArrayList localArrayList = new ArrayList();
+        ArrayList<String> localArrayList = new ArrayList<>();
         String whereClause = "brand_name ";
         if (selectedItemManufacturer.equalsIgnoreCase("All"))
             whereClause += " NOTNULL";
         else
-            whereClause += "= '" + selectedItemManufacturer + "'";
+            whereClause += "= '" + selectedItemManufacturer.toLowerCase() + "'";
         Object localObject = "SELECT DISTINCT bike_type FROM " + DB_TABLE + " WHERE " + whereClause;
         localObject = getWritableDatabase().rawQuery((String)localObject, null);
         //Add First value "All"
@@ -249,10 +225,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if (((Cursor)localObject).moveToFirst()) {
             do
             {
-                String manufacturerName = ((Cursor)localObject).getString(0);
-                //Log.v("TypeBike from db",manufacturerName);
-                // Bicycle bicycleManufacturer = new Bicycle(manufacturerName);
-                localArrayList.add(manufacturerName);
+                String bikeType = ((Cursor)localObject).getString(0);
+                localArrayList.add(capitalize(bikeType));
             } while (((Cursor)localObject).moveToNext());
         }
         return localArrayList;
@@ -262,9 +236,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //get list of all Bike Types
     public List<String> getAllBikeModels(String whereClause)
     {
-        ArrayList localArrayList = new ArrayList();
+        ArrayList<String> localArrayList = new ArrayList<>();
         Object localObject = "SELECT bike_model_name FROM " + DB_TABLE + " WHERE " + whereClause;
-        String modelKey, modelName;
+        String modelName;
         localObject = getWritableDatabase().rawQuery((String)localObject, null);
         //Add First value "All"
         //localArrayList.add("All");
@@ -272,12 +246,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             do
             {
                 modelName = ((Cursor) localObject).getString(0);
-
-                // Bicycle bicycleManufacturer = new Bicycle(manufacturerName);
-                localArrayList.add(modelName);
-
+                localArrayList.add(capitalize(modelName));
             } while (((Cursor)localObject).moveToNext());
         }
+        ((Cursor) localObject).close();
         return localArrayList;
     }    //get list of all Bike Types
     public HashMap<Integer,Bicycle> getBikeObjects(String whereClause)
@@ -292,29 +264,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             do
             {
                 Bicycle tmpBikeObject = new Bicycle();
-                tmpBikeObject.setBrandName(((Cursor) localObject).getString(0));
-              //  mapKey = ((Cursor) localObject).getString(0);
-                Log.v("Cursor 0", ((Cursor) localObject).getString(0));
-
-                tmpBikeObject.setBikeType(((Cursor) localObject).getString(1));
-               // mapKey += ((Cursor) localObject).getString(1);
-                Log.v("Cursor 1", ((Cursor) localObject).getString(1));
-
-                tmpBikeObject.setBikeModelName(((Cursor) localObject).getString(2));
-               // mapKey += ((Cursor) localObject).getString(2);
-                Log.v("Cursor 2", ((Cursor) localObject).getString(2));
-
+                tmpBikeObject.setBrandName(capitalize(((Cursor) localObject).getString(0)));
+                tmpBikeObject.setBikeType(capitalize(((Cursor) localObject).getString(1)));
+                tmpBikeObject.setBikeModelName(capitalize(((Cursor) localObject).getString(2)));
                 tmpBikeObject.setLinkToLocalImage(((Cursor) localObject).getString(3));
-                Log.v("mapKey", mapKey.toString());
-
-
-
-                // Bicycle bicycleManufacturer = new Bicycle(manufacturerName);
                 localArrayList.put(mapKey, tmpBikeObject);
                 mapKey++;
             } while (((Cursor)localObject).moveToNext());
         }
-        Log.v("LOLOLO",localArrayList.toString());
+        ((Cursor) localObject).close();
         return localArrayList;
     }
 
@@ -323,12 +281,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if (selectedItemManufacturer.equalsIgnoreCase("All"))
             whereClause += " NOTNULL AND bike_type ";
         else
-            whereClause += "= '" + selectedItemManufacturer + "' AND bike_type ";
+            whereClause += "= '" + selectedItemManufacturer.toLowerCase() + "' AND bike_type ";
         if (selectedItemType.equalsIgnoreCase("All"))
             whereClause += " NOTNULL";
         else
-            whereClause += "= '" + selectedItemType + "'";
+            whereClause += "= '" + selectedItemType.toLowerCase() + "'";
 
         return whereClause;
     }
+    private String capitalize(final String line) {
+        return Character.toUpperCase(line.charAt(0)) + line.substring(1);
     }
+}

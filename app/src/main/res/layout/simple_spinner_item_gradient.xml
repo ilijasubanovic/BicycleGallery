@@ -5,10 +5,11 @@
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content"
     android:textSize="25dip"
-    android:gravity="center_horizontal"  
+    android:gravity="center_horizontal"
     android:textColor="#ffffff"
     android:shadowColor="#192c2c2c"
     android:shadowRadius="10"
-    android:background="@color/spinnerColorBackground"
+    android:background="@drawable/spinner_bkg"
+    android:popupBackground="@drawable/spinner_bkg"
     android:padding="5dip"
     />

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+ <!--   <item >
+        <shape android:shape="rectangle" android:height="50dp" >
+            <gradient
+                android:angle="45"
+                android:endColor="#555994"
+                android:centerColor="#FFFFFF"
+                android:startColor="#555994"
+                android:useLevel="true"
+                android:type="linear" />
+        </shape>
+    </item>
     <item >
         <shape android:shape="rectangle" android:height="50dp" >
             <gradient
@@ -10,7 +21,18 @@
                 android:useLevel="true"
                 android:type="linear" />
         </shape>
-    </item><!--
+    </item>
+    <item >
+        <shape android:shape="rectangle" android:height="50dp" >
+            <gradient
+                android:angle="45"
+                android:endColor="#555994"
+                android:centerColor="#FFFFFF"
+                android:startColor="#555994"
+                android:useLevel="true"
+                android:type="linear" />
+        </shape>
+    </item>
     <item android:top="400dp">
         <shape android:shape="rectangle" android:height="50dp" >
         <gradient
@@ -38,4 +60,29 @@
             <solid android:color="#000000" />
         </shape>
     </item>-->
+    <item>
+        <shape
+            android:shape="rectangle">
+            <stroke android:width="1dp" android:color="#555994" />
+            <solid android:color="#00FF0000" />
+            <padding android:bottom="1dp"/>
+        </shape>
+    </item>
+
+    <item>
+        <shape
+            android:shape="rectangle">
+            <stroke android:width="1dp" android:color="#555994" />
+            <solid android:color="#00FF0000" />
+            <padding android:bottom="1dp"/>
+        </shape>
+    </item>
+
+    <item>
+        <shape
+            android:shape="rectangle">
+            <stroke android:width="1dp" android:color="#00000000" />
+            <solid android:color="#00000000" />
+        </shape>
+    </item>
 </layer-list>

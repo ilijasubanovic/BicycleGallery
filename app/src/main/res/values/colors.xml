@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="translucent_red">#80ff0000</color>
+    <color name="infoTextColor">#07070c</color>
+    <color name="infoTextColorBackground">#192c2c2c</color>
+    <color name="spinnerColorBackground">#aa830f0a</color>
+    <!--<color name="spinnerColorBackground">#AA000000</color>-->
+
+
+</resources>
