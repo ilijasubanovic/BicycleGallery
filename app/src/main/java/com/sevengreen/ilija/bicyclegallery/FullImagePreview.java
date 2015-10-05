@@ -56,8 +56,9 @@ public class FullImagePreview extends Activity {
         Resources res = getResources();
         int resID = res.getIdentifier(pathToLocalImage, "drawable", getPackageName().toString());
         imageFull.setImageResource(resID);
-
-        new LoadImage().execute("http://7green.vacau.com/bikes/trek_road_emonda.png");
+        String httpPath = getString(R.string.pathToServer)+bicycleRemoteImage;
+        System.out.println("PATH    :   " + httpPath);
+        new LoadImage().execute(httpPath);
     }
 
     private class LoadImage extends AsyncTask<String, String, Bitmap> {

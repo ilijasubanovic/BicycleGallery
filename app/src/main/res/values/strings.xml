@@ -9,6 +9,7 @@
     <string name="defaultTypeValue">_</string>
     <string name="defaultModelValue">_</string>
     <string name="emptyString"></string>
+    <string name="pathToServer">http://7green.vacau.com/bikes/</string>
 
 
 </resources>

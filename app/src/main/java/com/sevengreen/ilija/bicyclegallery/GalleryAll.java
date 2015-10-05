@@ -2,12 +2,22 @@ package com.sevengreen.ilija.bicyclegallery;
 //!!!!!!!!!!!!!!!!
 //FTP PASS bicikli1234
 //http://7green.vacau.com/bikes/
+//TO DO : insert new db file,
+// insert images (resize them before that
+//add loading from net in gallery part
+// add ads
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -22,16 +32,19 @@ import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -53,6 +66,8 @@ public class GalleryAll extends Activity  {
     private GestureDetector gd;
     SharedPreferences mPrefs;
     Boolean executeOnResume;
+    Bitmap bitmap;
+    Drawable d;
 
 
     @Override
@@ -62,6 +77,7 @@ public class GalleryAll extends Activity  {
         myTypeface = Typeface.createFromAsset(getAssets(), "fonts/scb.ttf");
         mPrefs = getPreferences(MODE_PRIVATE);
         executeOnResume = false;
+        sw = (ImageSwitcher) findViewById(R.id.imageSwitcher);
 
         myDbHelper = new DataBaseHelper(this);
         try {
@@ -128,7 +144,6 @@ public class GalleryAll extends Activity  {
         textBoxBikeType.setTypeface(myTypeface);
         textBoxBikeName = (TextView) findViewById(R.id.textBikeName);
         textBoxBikeName.setTypeface(myTypeface);
-        sw = (ImageSwitcher) findViewById(R.id.imageSwitcher);
         sw.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
@@ -409,6 +424,33 @@ public boolean onTouchEvent(MotionEvent event) {
             startActivity(i);
 
             return super.onSingleTapConfirmed(e);
+        }
+    }
+}
+
+class LoadFullSizeImage extends AsyncTask<String, String, ImageSwitcher> {
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+    protected ImageSwitcher doInBackground(String... args) {
+        try {
+            InputStream is = (InputStream) new URL(args[0]).getContent();
+            d = Drawable.createFromStream(is, "src name");
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    protected void onPostExecute(Drawable image) {
+
+        if(image != null){
+
+
+
+        }else{
+
+
         }
     }
 }

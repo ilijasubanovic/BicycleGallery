@@ -256,7 +256,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     {
         HashMap<Integer,Bicycle> localArrayList = new HashMap<Integer, Bicycle>();
         Integer mapKey=0;
-        Object localObject = "SELECT brand_name,bike_type,bike_model_name,link_to_local_image FROM " + DB_TABLE + " WHERE " + whereClause;
+        Object localObject = "SELECT brand_name,bike_type,bike_model_name,link_to_local_image,link_to_remote_image FROM " + DB_TABLE + " WHERE " + whereClause;
         localObject = getWritableDatabase().rawQuery((String)localObject, null);
         //Add First value "All"
         //localArrayList.add("All");
@@ -268,6 +268,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 tmpBikeObject.setBikeType(capitalize(((Cursor) localObject).getString(1)));
                 tmpBikeObject.setBikeModelName(capitalize(((Cursor) localObject).getString(2)));
                 tmpBikeObject.setLinkToLocalImage(((Cursor) localObject).getString(3));
+                tmpBikeObject.setLinkToRemoteImage(((Cursor) localObject).getString(4));
+
                 localArrayList.put(mapKey, tmpBikeObject);
                 mapKey++;
             } while (((Cursor)localObject).moveToNext());
@@ -290,6 +292,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return whereClause;
     }
     private String capitalize(final String line) {
-        return Character.toUpperCase(line.charAt(0)) + line.substring(1);
+        try {
+            return Character.toUpperCase(line.charAt(0)) + line.substring(1);
+        }
+        catch (StringIndexOutOfBoundsException s) {
+            System.out.println("TTTTTTTTTt  "+line);
+        }
+        return line;
     }
 }
