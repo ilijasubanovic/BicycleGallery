@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#ff8664">
+
+    <item android:id="@+id/menu_save"
+        android:icon="@drawable/ic_menu_save"
+        android:title="Save" />
+
+    <item android:id="@+id/menu_full_screen"
+        android:icon="@drawable/ic_media_fullscreen"
+        android:title="Fullscreen" />
+
+    <item android:id="@+id/menu_background"
+        android:icon="@drawable/ic_vibrate"
+        android:title="Put To Background" />
+
+</menu>

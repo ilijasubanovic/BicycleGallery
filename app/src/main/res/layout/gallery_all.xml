@@ -179,6 +179,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="fill_parent"
         android:layout_height="10dp"
+        android:max="100"
         android:layout_alignParentLeft="true" />
 
     <RelativeLayout
